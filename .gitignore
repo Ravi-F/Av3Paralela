@@ -1,0 +1,43 @@
+# Diretórios
+tests/
+results/
+logs/
+html_reports/
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes virtuais
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de dados grandes
+*.npy
+*.npz
+
+# Arquivos de configuração local
+*.local
+
+# Arquivos de cache
+.cache/
+
+# Arquivos de banco de dados
+*.db
+*.sqlite3
