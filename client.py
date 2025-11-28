@@ -741,47 +741,63 @@ def main():
             ax2.legend(fontsize=12)
             ax2.grid(True, linestyle='--', alpha=0.7, axis='y')
             
-            # Adiciona os valores nas barras
+            # Função auxiliar para colocar os valores em cima de cada barra
             def autolabel(rects, ax):
+                """Coloca os valores de speedup em cima de cada barra no gráfico"""
                 for rect in rects:
                     try:
-                        height = rect.get_height()
-                        if not np.isnan(height) and height > 0:  # Só adiciona rótulo se o valor for válido e positivo
-                            ax.text(rect.get_x() + rect.get_width()/2., height + 0.1,
-                                    f'{height:.1f}x', ha='center', va='bottom', fontsize=8, color='black')
+                        valor = rect.get_height()
+                        # Só mostra o valor se for um número válido e positivo
+                        if not np.isnan(valor) and valor > 0:
+                            ax.text(rect.get_x() + rect.get_width()/2., 
+                                   valor + 0.1,  # Posiciona um pouco acima da barra
+                                   f'{valor:.1f}x',  # Formata com 1 casa decimal e 'x'
+                                   ha='center', va='bottom',  # Centraliza o texto
+                                   fontsize=8, color='black')
                     except Exception as e:
-                        logger.debug(f"Erro ao adicionar rótulo na barra: {e}")
+                        logger.debug(f"Ocorreu um erro ao adicionar rótulo: {e}")
             
-            autolabel(rects1, ax2)
-            autolabel(rects2, ax2)
+            # Aplica os rótulos nas barras de speedup
+            autolabel(rects1, ax2)  # Para o speedup paralelo
+            autolabel(rects2, ax2)  # Para o speedup distribuído
             
-            # Configura o eixo X com os rótulos dos casos
+            # Configura os rótulos do eixo X com os números dos casos de teste
             ax2.set_xticks(x_speedup)
-            ax2.set_xticklabels([f"Caso {i+1}" for i in x_speedup], rotation=45, ha='right', fontsize=8)
+            ax2.set_xticklabels(
+                [f"Caso {i+1}" for i in x_speedup],
+                rotation=45,  # Inclina os rótulos para melhor legibilidade
+                ha='right',   # Alinha o texto à direita
+                fontsize=8    # Tamanho da fonte
+            )
             
-            # Ajusta o layout e salva a figura
+            # Ajusta o layout para evitar sobreposição e salva a figura
             plt.tight_layout()
             plt.savefig(plot_filename, dpi=300, bbox_inches='tight')
-            logger.info(f"Gráfico salvo em '{plot_filename}'")
+            logger.info(f"Gráfico de desempenho salvo em: {plot_filename}")
             
-            # Exibe o gráfico (opcional, pode ser removido em produção)
+            # Fecha a figura para liberar memória (não mostra na tela)
             plt.close()
             
         except Exception as e:
-            logger.error(f"Erro ao gerar gráfico: {e}", exc_info=True)
+            logger.error(f"Falha ao gerar o gráfico: {e}", exc_info=True)
         
-        logger.info("\nExecução concluída com sucesso!")
+        logger.info("\nExecução concluída com sucesso.")
         
     except KeyboardInterrupt:
-        logger.warning("Execução interrompida pelo usuário.")
+        logger.warning("Execução interrompida pelo usuário (Ctrl+C pressionado).")
     except Exception as e:
-        logger.critical(f"Erro fatal na execução: {e}", exc_info=True)
+        logger.critical(f"Erro crítico durante a execução: {e}", exc_info=True)
     finally:
-        # Garante que o arquivo de log seja fechado corretamente
+        # Garantindo que todos os logs sejam salvos corretamente
         for handler in logger.handlers[:]:
             if isinstance(handler, logging.FileHandler):
-                handler.close()
-                logger.removeHandler(handler)
+                try:
+                    handler.flush()
+                    handler.close()
+                except Exception as e:
+                    print(f"Aviso: falha ao fechar o arquivo de log: {e}")
+                finally:
+                    logger.removeHandler(handler)
     plt.show()
 
 def formatar_matriz_para_html(matrix: np.ndarray, max_rows: int = 10, max_cols: int = 10) -> str:
