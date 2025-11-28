@@ -1,14 +1,36 @@
 # Multiplicação de Matrizes Distribuída
 
-Este projeto implementa um sistema de multiplicação de matrizes que pode ser executado de três maneiras diferentes: serial, paralela e distribuída. O objetivo é comparar o desempenho entre essas abordagens.
+Este projeto implementa um sistema de multiplicação de matrizes que pode ser executado de três maneiras diferentes: serial, paralela e distribuída. O objetivo principal é demonstrar como a distribuição de tarefas entre múltiplos servidores pode melhorar o desempenho de operações matriciais intensivas.
+
+## 🔄 Fluxo de Execução
+
+### 1. Geração das Matrizes
+- O cliente gera duas matrizes A e B de tamanhos configuráveis
+- A matriz A é dividida em submatrizes para processamento distribuído
+
+### 2. Processamento Distribuído
+- Cada servidor recebe uma parte da matriz A e a matriz B completa
+- Os cálculos são realizados em paralelo nos servidores
+- Os resultados parciais são retornados ao cliente
+
+### 3. Consolidação dos Resultados
+- O cliente recebe e combina os resultados parciais
+- A matriz resultante C é formada pela concatenação das partes processadas
+- Relatórios e métricas de desempenho são gerados
 
 ## 🚀 Funcionalidades
 
-- Multiplicação de matrizes em modo serial (um único processo)
-- Multiplicação paralela usando multiprocessamento
-- Multiplicação distribuída entre múltiplos servidores
-- Geração de relatórios em HTML com os resultados
-- Gráficos comparativos de desempenho
+### Modos de Operação
+- **Serial**: Processamento sequencial em um único núcleo
+- **Paralelo**: Multiprocessamento local utilizando todos os núcleos disponíveis
+- **Distribuído**: Cálculos distribuídos entre múltiplos servidores via sockets
+
+### Características
+- Divisão automática da carga de trabalho
+- Comunicação assíncrona entre cliente e servidores
+- Tolerância a falhas com sistema de retentativas
+- Geração de relatórios detalhados em HTML
+- Análise comparativa de desempenho entre os modos de execução
 
 ## 📋 Pré-requisitos
 
@@ -36,15 +58,17 @@ Este projeto implementa um sistema de multiplicação de matrizes que pode ser e
 
 ### 1. Iniciando os Servidores
 
-Em terminais separados, execute:
+Para o modo distribuído, é necessário iniciar pelo menos um servidor. Para melhor desempenho, recomenda-se pelo menos dois servidores:
 
 ```bash
-# Servidor 1
+# Terminal 1 - Primeiro servidor
 python server.py --port 12345
 
-# Servidor 2 (opcional, para modo distribuído)
+# Terminal 2 - Segundo servidor (opcional)
 python server.py --port 12346
 ```
+
+Cada servidor pode processar partes independentes da matriz A em paralelo, acelerando significativamente o processamento para matrizes grandes.
 
 ### 2. Executando o Cliente
 
@@ -54,25 +78,41 @@ python client.py
 
 ### 3. Opções de Execução
 
-O cliente suporta os seguintes argumentos:
+O cliente oferece várias opções para personalizar a execução:
 
-- `--servers`: Lista de servidores no formato "host:porta" (padrão: "localhost:12345,localhost:12346")
-- `--test-cases`: Número de casos de teste (padrão: 3)
-- `--runs`: Número de execuções por caso de teste (padrão: 2)
+- `--servers`: Especifica os servidores no formato "host:porta" (padrão: "localhost:12345,localhost:12346")
+- `--test-cases`: Número de casos de teste com diferentes tamanhos de matriz (padrão: 3)
+- `--runs`: Número de execuções por caso de teste para cálculo de médias (padrão: 2)
+- `--min-size`: Tamanho mínimo das matrizes (padrão: 100)
+- `--max-size`: Tamanho máximo das matrizes (padrão: 1000)
+
+Exemplo de execução com parâmetros personalizados:
+```bash
+python client.py --test-cases 5 --runs 3 --min-size 50 --max-size 500
+```
 
 Exemplo:
 ```bash
 python client.py --servers "localhost:12345,localhost:12346" --test-cases 5 --runs 3
 ```
 
-## 📊 Saída
+## 📊 Saída e Análise
 
-O programa gera os seguintes arquivos:
+### Arquivos Gerados
+- `resultados_comparativos.csv`: Dados brutos de tempos de execução e speedup
+- `comparativo_execucao.png`: Gráfico comparativo entre os modos de execução
+- `html_reports/`: Relatórios HTML detalhados para cada caso de teste
+  - Visualização das matrizes de entrada e saída
+  - Métricas de desempenho detalhadas
+  - Comparação entre os modos de execução
+- `logs/`: Registros detalhados para diagnóstico
 
-- `resultados_comparativos.csv`: Dados brutos dos tempos de execução
-- `comparativo_execucao.png`: Gráfico comparativo de desempenho
-- `html_reports/`: Pasta contendo relatórios detalhados em HTML
-- `logs/`: Arquivos de log com informações detalhadas da execução
+### Análise de Desempenho
+O sistema calcula automaticamente:
+- Tempo total de execução para cada modo
+- Speedup em relação à execução serial
+- Eficiência da paralelização
+- Uso de recursos
 
 ## 🏗️ Estrutura do Projeto
 
