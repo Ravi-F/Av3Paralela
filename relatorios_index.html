@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Relatórios - Multiplicação de Matrizes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .report-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .report-card h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .report-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .report-card a:hover {
+            background-color: #2980b9;
+        }
+        .info-box {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+        @media (max-width: 768px) {
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Relatórios de Execução</h1>
+        
+        <div class="info-box">
+            <h3>Como usar:</h3>
+            <p>Clique em qualquer cartão abaixo para visualizar o relatório detalhado da execução correspondente.</p>
+            <p>Use o botão "Abrir Todos os Relatórios" para abrir todos os relatórios de uma vez.</p>
+        </div>
+
+        <div class="report-grid" id="reports-container">
+            <!-- Os relatórios serão inseridos aqui via JavaScript -->
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="openAllReports()" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #2ecc71; color: white; border: none; border-radius: 4px; font-weight: bold; transition: background-color 0.3s;">
+                🔍 Abrir Todos os Relatórios
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos relatórios
+        const reports = [
+            { id: 1, title: "Caso 1: Matrizes 2x2" },
+            { id: 2, title: "Caso 2: Matrizes 200x200" },
+            { id: 3, title: "Caso 3: Matrizes 300x300" },
+            { id: 4, title: "Caso 4: Matrizes 400x400" },
+            { id: 5, title: "Caso 5: Matrizes 500x500" },
+            { id: 6, title: "Caso 6: Matrizes 100x200 e 200x200" },
+            { id: 7, title: "Caso 7: Matrizes 200x300 e 300x300" },
+            { id: 8, title: "Caso 8: Matrizes 300x400 e 400x400" },
+            { id: 9, title: "Caso 9: Matrizes 400x500 e 500x500" },
+            { id: 10, title: "Caso 10: Matrizes 500x600 e 600x600" },
+            { id: 11, title: "Caso 11: Matrizes 600x700 e 700x700" },
+            { id: 12, title: "Caso 12: Matrizes 700x800 e 800x800" },
+            { id: 13, title: "Caso 13: Matrizes 800x900 e 900x900" },
+            { id: 14, title: "Caso 14: Matrizes 900x1000 e 1000x1000" },
+            { id: 15, title: "Caso 15: Matrizes 1000x1000" },
+            { id: 16, title: "Caso 16: Matrizes 1500x1500" }
+        ];
+
+        // Função para criar os cards dos relatórios
+        function createReportCards() {
+            const container = document.getElementById('reports-container');
+            
+            reports.forEach(report => {
+                const card = document.createElement('div');
+                card.className = 'report-card';
+                card.innerHTML = `
+                    <h3>${report.title}</h3>
+                    <p>Visualize os resultados detalhados deste caso de teste.</p>
+                    <a href="html_reports/relatorio_caso_${report.id}.html" target="_blank">Abrir Relatório</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Função para abrir todos os relatórios
+        function openAllReports() {
+            if (confirm('Isso abrirá 16 abas no seu navegador. Deseja continuar?')) {
+                reports.forEach(report => {
+                    window.open(`html_reports/relatorio_caso_${report.id}.html`, '_blank');
+                });
+            }
+        }
+
+        // Inicializa a página
+        document.addEventListener('DOMContentLoaded', createReportCards);
+    </script>
+</body>
+</html>
