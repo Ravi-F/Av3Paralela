@@ -136,18 +136,3 @@ Av3Paralela/
 4. Faça push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## ✉️ Contato
-
-Seu Nome - [@seu_twitter](https://twitter.com/seu_twitter) - seu.email@exemplo.com
-
-Link do Projeto: [https://github.com/Ravi-F/Av3Paralela](https://github.com/Ravi-F/Av3Paralela)
-
----
-
-<div align="center">
-    Feito com ❤️ por Você!
-</div>
